@@ -1,0 +1,35 @@
+---
+/**
+ * Barra sticky mobile con la CTA di download, sempre a portata di pollice.
+ * Su desktop non esiste (md:hidden). Rispetta la safe area di iPhone/Android.
+ */
+import { STORE_LINKS } from '../config';
+import type { UiContent } from '../content/types';
+
+interface Props {
+  store: UiContent['store'];
+}
+
+const { store } = Astro.props;
+const href = STORE_LINKS.appStore || STORE_LINKS.playStore || '#contatti';
+const isLive = href !== '#contatti';
+---
+
+<div
+  class="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-primary/95 backdrop-blur-md md:hidden"
+>
+  <div class="flex items-center justify-between gap-3 px-4 py-2.5">
+    <p class="min-w-0 flex-1 truncate text-xs font-medium text-muted">{store.stickyLabel}</p>
+    <a
+      href={href}
+      rel={isLive ? 'noopener' : undefined}
+      class="js-store-cta inline-flex min-h-11 shrink-0 items-center rounded-card bg-accent px-5 text-sm font-bold tracking-wide text-on-accent uppercase"
+      data-store={STORE_LINKS.appStore ? 'apple' : STORE_LINKS.playStore ? 'google' : 'none'}
+      data-store-location="sticky"
+      data-store-live={isLive ? 'true' : 'false'}
+      title={isLive ? undefined : store.fallbackHint}
+    >
+      {store.download}
+    </a>
+  </div>
+</div>

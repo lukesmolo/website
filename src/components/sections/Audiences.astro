@@ -1,0 +1,27 @@
+---
+import type { LandingContent } from '../../content/types';
+
+interface Props {
+  audiences: LandingContent['audiences'];
+}
+
+const { audiences } = Astro.props;
+---
+
+<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+  <h2 class="mx-auto max-w-2xl text-center text-2xl font-extrabold tracking-tight italic sm:text-3xl">
+    {audiences.title}
+  </h2>
+
+  <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+    {
+      audiences.items.map((item) => (
+        <li class="rounded-card border border-line-subtle bg-surface p-6">
+          <span class="block h-1 w-8 rounded-sm bg-accent" aria-hidden="true" />
+          <h3 class="mt-4 text-lg font-bold">{item.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

@@ -1,0 +1,26 @@
+{
+  // Deploy su Cloudflare Workers con static assets (non Pages).
+  // Build: `npm run build` produce dist/, poi `wrangler deploy`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "panka-website",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Su Workers il fallback 404 va dichiarato esplicitamente
+    // (a differenza di Pages non è automatico): serve dist/404.html.
+    "not_found_handling": "404-page",
+    // Le richieste /api/* passano SEMPRE prima dal Worker (form contatti);
+    // tutto il resto è servito direttamente dagli asset statici (più veloce).
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    // Non segreti: modificabili qui. I segreti vanno in `wrangler secret put`.
+    "CONTACT_TO_EMAIL": "ricapsrl.bologna@gmail.com",
+    "CONTACT_FROM_EMAIL": "Panka <onboarding@resend.dev>"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

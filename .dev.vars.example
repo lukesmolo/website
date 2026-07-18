@@ -1,0 +1,13 @@
+# Copia questo file in `.dev.vars` per lo sviluppo locale con `wrangler dev`.
+# In produzione questi valori vanno impostati con `wrangler secret put <NOME>`.
+# NON committare mai `.dev.vars` (è già in .gitignore).
+
+# Supabase del sito (progetto che ospita la tabella `contacts`, vedi db/schema.sql)
+SUPABASE_URL="https://<project-ref>.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="<service-role-key>"
+
+# Resend — notifica email dei lead
+RESEND_API_KEY="re_..."
+
+# Cloudflare Turnstile — chiave SEGRETA (la site key pubblica va in .env)
+TURNSTILE_SECRET_KEY="0x..."

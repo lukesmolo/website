@@ -1,0 +1,36 @@
+---
+import type { LandingContent, UiContent } from '../../content/types';
+import PhoneFrame from '../PhoneFrame.astro';
+import SectionTitle from '../SectionTitle.astro';
+import StoreButtons from '../StoreButtons.astro';
+
+interface Props {
+  howItWorks: LandingContent['howItWorks'];
+  store: UiContent['store'];
+}
+
+const { howItWorks, store } = Astro.props;
+---
+
+<section id="come-funziona" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+  <SectionTitle title={howItWorks.title} />
+
+  <ol class="mt-10 grid gap-12 lg:grid-cols-3 lg:gap-8">
+    {
+      howItWorks.steps.map((step, i) => (
+        <li class="flex flex-col gap-5">
+          <div>
+            <span class="text-4xl font-extrabold text-accent italic" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-2 text-xl font-bold">{step.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted sm:text-base">{step.body}</p>
+          </div>
+          <PhoneFrame screenshot={step.screenshot} class="mt-auto" />
+        </li>
+      ))
+    }
+  </ol>
+
+  <StoreButtons store={store} location="steps" class="mt-14 justify-center" />
+</section>

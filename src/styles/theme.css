@@ -1,0 +1,80 @@
+/* ============================================================================
+   PANKA — TEMA DEL BRAND
+   ----------------------------------------------------------------------------
+   Questo è L'UNICO file da modificare per cambiare i colori del sito.
+   I componenti usano SOLO i nomi semantici (--color-*): se domani il brand
+   cambia, si aggiornano i valori qui e il sito si riveste da solo.
+
+   Palette estratta dal codice dell'app (src/theme/index.tsx della repo
+   dell'app): tema scuro di default, arancio #FF6B00 come colore d'azione.
+   ========================================================================== */
+
+:root {
+  /* --------------------------------------------------------------------------
+     1. PALETTE LETTERALE — i colori "fisici" del brand, presi dall'app.
+     -------------------------------------------------------------------------- */
+  --panka-night: #0a0e14;      /* sfondo app (quasi nero, blu freddo)  */
+  --panka-carbon: #161b22;     /* card, tab bar, modali                 */
+  --panka-steel: #1e2530;      /* input, superfici secondarie           */
+  --panka-chalk: #f0f6fc;      /* testo principale (bianco sporco)      */
+  --panka-smoke: #8b949e;      /* testo secondario, icone               */
+  --panka-orange: #ff6b00;     /* arancio brand: CTA, accenti, link     */
+  --panka-green: #2ecc71;      /* successo                              */
+  --panka-amber: #f39c12;      /* warning / oro classifica              */
+  --panka-red: #e74c3c;        /* errore / azioni distruttive           */
+
+  /* Colori ruolo (default calcio dell'app) */
+  --panka-role-gk: #f59e0b;    /* Portiere       */
+  --panka-role-def: #3b82f6;   /* Difensore      */
+  --panka-role-mid: #10b981;   /* Centrocampista */
+  --panka-role-fwd: #ef4444;   /* Attaccante     */
+
+  /* --------------------------------------------------------------------------
+     2. NOMI SEMANTICI — usare SOLO questi nei componenti.
+     -------------------------------------------------------------------------- */
+  --color-primary: var(--panka-night);        /* colore brand scuro / sfondi   */
+  --color-on-primary: var(--panka-chalk);     /* testo su primary              */
+  --color-accent: var(--panka-orange);        /* CTA, evidenziazioni, bullet   */
+  /* Nell'app il testo sui bottoni arancio è bianco, ma bianco su #FF6B00 non
+     supera il contrasto WCAG AA (~2.4:1): sul sito usiamo il navy del brand. */
+  --color-on-accent: var(--panka-night);      /* testo su accent               */
+
+  --color-bg: var(--panka-night);             /* sfondo pagina                 */
+  --color-surface: var(--panka-carbon);       /* card e superfici              */
+  --color-surface-2: var(--panka-steel);      /* input, superfici in rilievo   */
+
+  --color-text: var(--panka-chalk);
+  --color-text-muted: var(--panka-smoke);
+
+  --color-border: rgb(255 255 255 / 0.08);
+  --color-border-subtle: rgb(255 255 255 / 0.05);
+  --color-highlight: rgb(255 255 255 / 0.07);
+
+  --color-success: var(--panka-green);
+  --color-warning: var(--panka-amber);
+  --color-danger: var(--panka-red);
+
+  --color-role-gk: var(--panka-role-gk);
+  --color-role-def: var(--panka-role-def);
+  --color-role-mid: var(--panka-role-mid);
+  --color-role-fwd: var(--panka-role-fwd);
+
+  /* Tinte trasparenti dell'accento (l'app usa riempimenti a 12–15% di alpha) */
+  --color-accent-soft: rgb(255 107 0 / 0.14);
+  --color-success-soft: rgb(46 204 113 / 0.14);
+
+  /* --------------------------------------------------------------------------
+     3. TIPOGRAFIA — l'app usa il font di sistema, il sito fa lo stesso
+        (zero webfont = zero richieste extra, testo subito visibile).
+     -------------------------------------------------------------------------- */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+
+  /* --------------------------------------------------------------------------
+     4. FORME — raggi e ombre coerenti con i componenti dell'app.
+     -------------------------------------------------------------------------- */
+  --radius-card: 12px;   /* card e bottoni primari nell'app  */
+  --radius-input: 10px;  /* input e select                   */
+  --radius-pill: 999px;  /* badge e chip                     */
+  --shadow-float: 0 3px 6px rgb(0 0 0 / 0.3);
+}

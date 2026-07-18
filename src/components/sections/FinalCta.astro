@@ -1,0 +1,19 @@
+---
+import type { LandingContent, UiContent } from '../../content/types';
+import StoreButtons from '../StoreButtons.astro';
+
+interface Props {
+  finalCta: LandingContent['finalCta'];
+  store: UiContent['store'];
+}
+
+const { finalCta, store } = Astro.props;
+---
+
+<section class="border-t border-line-subtle bg-surface">
+  <div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 lg:py-24">
+    <h2 class="text-3xl font-extrabold tracking-tight italic sm:text-4xl">{finalCta.title}</h2>
+    {finalCta.sub && <p class="mt-4 text-muted">{finalCta.sub}</p>}
+    <StoreButtons store={store} location="final" class="mt-8 justify-center" />
+  </div>
+</section>

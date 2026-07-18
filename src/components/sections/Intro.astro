@@ -1,0 +1,24 @@
+---
+import type { LandingContent } from '../../content/types';
+import PhoneFrame from '../PhoneFrame.astro';
+import SectionTitle from '../SectionTitle.astro';
+
+interface Props {
+  intro: LandingContent['intro'];
+}
+
+const { intro } = Astro.props;
+---
+
+<section class="border-t border-line-subtle bg-surface">
+  <div
+    class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:py-24"
+  >
+    <PhoneFrame screenshot={intro.screenshot} class="order-2 lg:order-1" />
+
+    <div class="order-1 lg:order-2">
+      <SectionTitle title={intro.title} />
+      <p class="mt-5 text-base leading-relaxed text-muted sm:text-lg">{intro.body}</p>
+    </div>
+  </div>
+</section>

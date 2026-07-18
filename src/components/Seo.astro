@@ -1,0 +1,96 @@
+---
+/**
+ * Meta tag completi: title/description, canonical, hreflang reciproci,
+ * Open Graph (+ og:locale e alternates), Twitter card e JSON-LD
+ * (Organization sempre; SoftwareApplication + FAQPage sulla landing).
+ */
+import { LOCALES, OG_LOCALES, localePath } from '../content';
+import type { LandingContent, Locale } from '../content/types';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  /** Percorso indipendente dalla lingua (es. '/', '/privacy') */
+  pagePath: string;
+  ogAlt: string;
+  /** Solo sulla landing: genera SoftwareApplication + FAQPage */
+  landing?: LandingContent;
+}
+
+const { locale, title, description, pagePath, ogAlt, landing } = Astro.props;
+
+const site = Astro.site!;
+const absolute = (path: string) => new URL(path, site).href;
+const canonical = absolute(localePath(locale, pagePath));
+const ogImage = absolute('/og.png');
+
+const alternates = LOCALES.map((l) => ({
+  locale: l,
+  href: absolute(localePath(l, pagePath)),
+}));
+
+const jsonLd: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Panka',
+    url: site.href,
+    logo: absolute('/icon-512.png'),
+  },
+];
+
+if (landing) {
+  jsonLd.push(
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Panka',
+      operatingSystem: 'iOS, Android',
+      applicationCategory: 'SportsApplication',
+      description,
+      inLanguage: locale,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: landing.faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+  );
+}
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{alternates.map((a) => <link rel="alternate" hreflang={a.locale} href={a.href} />)}
+<link rel="alternate" hreflang="x-default" href={absolute(localePath('it', pagePath))} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Panka" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={ogAlt} />
+<meta property="og:locale" content={OG_LOCALES[locale]} />
+{
+  LOCALES.filter((l) => l !== locale).map((l) => (
+    <meta property="og:locale:alternate" content={OG_LOCALES[l]} />
+  ))
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { LandingContent } from '../../content/types';
+import SectionTitle from '../SectionTitle.astro';
+
+interface Props {
+  testimonials: LandingContent['testimonials'];
+}
+
+const { testimonials } = Astro.props;
+
+/* Avatar opzionali: se il file indicato nel contenuto non esiste, la citazione
+   resta senza foto, senza rompersi. */
+const avatars = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/testimonials/*.{png,jpg,jpeg,webp}',
+  { eager: true },
+);
+const avatarFor = (path?: string) => {
+  if (!path) return null;
+  const match = Object.entries(avatars).find(([p]) => p.endsWith(`/${path}`));
+  return match ? match[1].default : null;
+};
+---
+
+<section class="border-t border-line-subtle bg-surface">
+  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+    <SectionTitle title={testimonials.title} />
+
+    <div class="mt-10 grid gap-4 lg:grid-cols-3 lg:gap-5">
+      {
+        testimonials.items.map((t) => {
+          const avatar = avatarFor(t.avatar);
+          return (
+            <figure class="flex flex-col rounded-card border border-line-subtle bg-primary p-6">
+              <span class="text-5xl leading-none font-extrabold text-accent" aria-hidden="true">
+                “
+              </span>
+              <blockquote class="mt-2 flex-1">
+                <p class="text-base leading-relaxed font-medium italic sm:text-lg">{t.quote}</p>
+              </blockquote>
+              {(t.name || t.team) && (
+                <figcaption class="mt-5 flex items-center gap-3">
+                  {avatar && (
+                    <Image
+                      src={avatar}
+                      alt=""
+                      width={80}
+                      height={80}
+                      class="h-10 w-10 rounded-lg object-cover"
+                    />
+                  )}
+                  <span class="text-sm">
+                    {t.name && <span class="block font-bold">{t.name}</span>}
+                    {t.team && <span class="block text-muted">{t.team}</span>}
+                  </span>
+                </figcaption>
+              )}
+            </figure>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

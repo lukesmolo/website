@@ -1,0 +1,249 @@
+---
+/**
+ * Form contatti: valida lato client per cortesia, ma la validazione vera
+ * è nel Worker (/api/contact). Include honeypot e Cloudflare Turnstile
+ * (caricato pigramente solo quando il form entra in viewport).
+ */
+import type { LandingContent, Locale } from '../../content/types';
+import { CONTACT_ENDPOINT, TURNSTILE_SITE_KEY } from '../../config';
+import SectionTitle from '../SectionTitle.astro';
+
+interface Props {
+  contact: LandingContent['contact'];
+  locale: Locale;
+}
+
+const { contact, locale } = Astro.props;
+
+const formConfig = {
+  endpoint: CONTACT_ENDPOINT,
+  turnstileKey: TURNSTILE_SITE_KEY,
+  locale,
+  messages: {
+    sending: contact.sending,
+    success: contact.success,
+    errorGeneric: contact.errorGeneric,
+    validation: contact.errorValidation,
+  },
+};
+
+const inputClass =
+  'w-full rounded-input border border-line-subtle bg-surface-2 px-4 py-3 text-base text-text placeholder:text-muted/60 focus:border-accent focus:outline-none';
+---
+
+<section id="contatti" class="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:py-24">
+  <SectionTitle title={contact.title} />
+  <p class="mt-4 text-sm leading-relaxed text-muted sm:text-base">{contact.intro}</p>
+
+  <form id="contact-form" class="mt-8 space-y-5" novalidate>
+    <div>
+      <label for="cf-name" class="mb-1.5 block text-sm font-semibold">{contact.fields.name.label}</label>
+      <input
+        id="cf-name"
+        name="name"
+        type="text"
+        required
+        maxlength="120"
+        autocomplete="name"
+        placeholder={contact.fields.name.placeholder}
+        class={inputClass}
+      />
+      <p class="error-for-name mt-1 hidden text-xs text-danger" role="alert">
+        {contact.errorValidation.name}
+      </p>
+    </div>
+
+    <div>
+      <label for="cf-email" class="mb-1.5 block text-sm font-semibold">{contact.fields.email.label}</label>
+      <input
+        id="cf-email"
+        name="email"
+        type="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        inputmode="email"
+        placeholder={contact.fields.email.placeholder}
+        class={inputClass}
+      />
+      <p class="error-for-email mt-1 hidden text-xs text-danger" role="alert">
+        {contact.errorValidation.email}
+      </p>
+    </div>
+
+    <div>
+      <label for="cf-team" class="mb-1.5 block text-sm font-semibold">{contact.fields.team.label}</label>
+      <input
+        id="cf-team"
+        name="team"
+        type="text"
+        maxlength="120"
+        autocomplete="organization"
+        placeholder={contact.fields.team.placeholder}
+        class={inputClass}
+      />
+    </div>
+
+    <div>
+      <label for="cf-message" class="mb-1.5 block text-sm font-semibold">{contact.fields.message.label}</label>
+      <textarea
+        id="cf-message"
+        name="message"
+        required
+        rows="5"
+        maxlength="4000"
+        placeholder={contact.fields.message.placeholder}
+        class={inputClass}></textarea>
+      <p class="error-for-message mt-1 hidden text-xs text-danger" role="alert">
+        {contact.errorValidation.message}
+      </p>
+    </div>
+
+    {/* Honeypot anti-bot: invisibile agli umani, irresistibile per i bot */}
+    <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+      <label for="cf-website">Website</label>
+      <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    {TURNSTILE_SITE_KEY && <div id="turnstile-slot" class="min-h-[65px]"></div>}
+
+    <button
+      type="submit"
+      class="w-full cursor-pointer rounded-card bg-accent px-6 py-3.5 text-base font-bold tracking-wide text-on-accent uppercase transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
+    >
+      {contact.submit}
+    </button>
+
+    <p id="contact-status" class="hidden rounded-input px-4 py-3 text-sm font-medium" role="status" aria-live="polite"></p>
+
+    <p class="text-xs text-muted">{contact.privacyNote}</p>
+  </form>
+</section>
+
+<script is:inline type="application/json" id="contact-config" set:html={JSON.stringify(formConfig)} />
+
+<script>
+  interface ContactConfig {
+    endpoint: string;
+    turnstileKey: string;
+    locale: string;
+    messages: {
+      sending: string;
+      success: string;
+      errorGeneric: string;
+      validation: { name: string; email: string; message: string };
+    };
+  }
+
+  declare global {
+    interface Window {
+      turnstile?: {
+        render: (el: string | HTMLElement, opts: Record<string, unknown>) => string;
+        reset: (id?: string) => void;
+        getResponse: (id?: string) => string | undefined;
+      };
+    }
+  }
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const configEl = document.getElementById('contact-config');
+
+  if (form && configEl?.textContent) {
+    const config: ContactConfig = JSON.parse(configEl.textContent);
+    const status = document.getElementById('contact-status')!;
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+    /* --- Turnstile: caricato solo quando il form è visibile --- */
+    let widgetId: string | undefined;
+    if (config.turnstileKey) {
+      let loading = false;
+      const loadTurnstile = () => {
+        if (loading) return;
+        loading = true;
+        const s = document.createElement('script');
+        s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        s.async = true;
+        s.onload = () => {
+          widgetId = window.turnstile?.render('#turnstile-slot', {
+            sitekey: config.turnstileKey,
+            theme: 'dark',
+            language: config.locale,
+          });
+        };
+        document.head.appendChild(s);
+      };
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            loadTurnstile();
+            observer.disconnect();
+          }
+        },
+        { rootMargin: '200px' },
+      );
+      observer.observe(form);
+    }
+
+    const showStatus = (message: string, ok: boolean) => {
+      status.textContent = message;
+      status.classList.remove('hidden');
+      status.classList.toggle('bg-success-soft', ok);
+      status.classList.toggle('text-success', ok);
+      status.classList.toggle('bg-accent-soft', !ok);
+      status.classList.toggle('text-danger', !ok);
+    };
+
+    const setFieldError = (field: 'name' | 'email' | 'message', visible: boolean) => {
+      form.querySelector(`.error-for-${field}`)?.classList.toggle('hidden', !visible);
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.classList.add('hidden');
+
+      const data = new FormData(form);
+      const name = String(data.get('name') ?? '').trim();
+      const email = String(data.get('email') ?? '').trim();
+      const team = String(data.get('team') ?? '').trim();
+      const message = String(data.get('message') ?? '').trim();
+
+      const nameOk = name.length >= 2;
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      const messageOk = message.length >= 2;
+      setFieldError('name', !nameOk);
+      setFieldError('email', !emailOk);
+      setFieldError('message', !messageOk);
+      if (!nameOk || !emailOk || !messageOk) return;
+
+      submitBtn.disabled = true;
+      showStatus(config.messages.sending, true);
+
+      try {
+        const response = await fetch(config.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            team,
+            message,
+            lang: config.locale,
+            website: String(data.get('website') ?? ''),
+            turnstileToken: widgetId ? (window.turnstile?.getResponse(widgetId) ?? '') : '',
+          }),
+        });
+        const result = (await response.json()) as { ok: boolean };
+        if (!response.ok || !result.ok) throw new Error('request failed');
+
+        showStatus(config.messages.success, true);
+        form.reset();
+        if (widgetId) window.turnstile?.reset(widgetId);
+        document.dispatchEvent(new CustomEvent('panka:lead'));
+      } catch {
+        showStatus(config.messages.errorGeneric, false);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+</script>

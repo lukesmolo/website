@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import type { LandingContent } from '../../content/types';
+import SectionTitle from '../SectionTitle.astro';
+import RolesTable from './RolesTable.astro';
+import fieldPhoto from '../../assets/photos/amateur-football.jpg';
+
+interface Props {
+  why: LandingContent['why'];
+}
+
+const { why } = Astro.props;
+---
+
+<section id="perche-panka" class="border-t border-line-subtle bg-surface">
+  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+    <SectionTitle title={why.title} />
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-5">
+      {
+        why.blocks.slice(0, 2).map((block) => (
+          <article class="rounded-card border border-line-subtle bg-primary p-6">
+            <h3 class="text-lg font-bold">{block.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted sm:text-base">{block.body}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    {/* Foto di calcio amatoriale (Unsplash, ottimizzata in locale) a spezzare la sezione */}
+    <Image
+      src={fieldPhoto}
+      alt={why.photoAlt}
+      widths={[480, 800, 1200, 1600]}
+      sizes="(max-width: 1152px) 100vw, 1152px"
+      class="mt-5 aspect-[2/1] w-full rounded-card border border-line-subtle object-cover sm:aspect-[5/2]"
+    />
+
+    <div class="mt-5 grid gap-4 sm:grid-cols-2 sm:gap-5">
+      {
+        why.blocks.slice(2).map((block) => (
+          <article class="rounded-card border border-line-subtle bg-primary p-6">
+            <h3 class="text-lg font-bold">{block.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted sm:text-base">{block.body}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <RolesTable roles={why.roles} />
+  </div>
+</section>

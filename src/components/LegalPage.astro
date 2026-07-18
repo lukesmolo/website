@@ -1,0 +1,37 @@
+---
+import type { Locale } from '../content/types';
+import { getContent, localePath } from '../content';
+import Base from '../layouts/Base.astro';
+import SectionTitle from './SectionTitle.astro';
+
+interface Props {
+  locale: Locale;
+  page: 'privacy' | 'cookiePolicy';
+}
+
+const { locale, page } = Astro.props;
+const { legal, ui } = getContent(locale);
+const doc = legal[page];
+const pagePath = page === 'privacy' ? '/privacy' : '/cookie-policy';
+---
+
+<Base
+  locale={locale}
+  pagePath={pagePath}
+  title={`${doc.title} — Panka`}
+  description={ui.meta.description}
+>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <SectionTitle title={doc.title} as="h1" />
+    <p class="mt-3 text-sm text-muted">{doc.updated}</p>
+    <div class="mt-8 space-y-5 leading-relaxed text-muted">
+      {doc.body.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    <a
+      href={localePath(locale, '/')}
+      class="mt-10 inline-block font-bold text-accent hover:underline"
+    >
+      ← {legal.backHome}
+    </a>
+  </article>
+</Base>

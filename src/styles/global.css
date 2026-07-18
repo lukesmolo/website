@@ -1,0 +1,146 @@
+@import './theme.css';
+@import 'tailwindcss';
+
+/* Collega Tailwind alle variabili del tema: le utility (bg-accent, text-muted…)
+   puntano ai custom property di theme.css, mai a esadecimali diretti. */
+@theme inline {
+  --color-*: initial;
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-line: var(--color-border);
+  --color-line-subtle: var(--color-border-subtle);
+  --color-highlight: var(--color-highlight);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+  --color-role-gk: var(--color-role-gk);
+  --color-role-def: var(--color-role-def);
+  --color-role-mid: var(--color-role-mid);
+  --color-role-fwd: var(--color-role-fwd);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-success-soft: var(--color-success-soft);
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  --font-sans: var(--font-sans);
+
+  --radius-card: var(--radius-card);
+  --radius-input: var(--radius-input);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* Focus visibile e coerente ovunque (accessibilità da tastiera) */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Ancore: le sezioni non finiscono sotto l'header sticky */
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Safe area iOS/Android per la barra sticky mobile */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Cookie banner (CookieConsent v3) vestito con il tema del sito */
+#cc-main {
+  --cc-font-family: var(--font-sans);
+  --cc-bg: var(--color-surface);
+  --cc-primary-color: var(--color-text);
+  --cc-secondary-color: var(--color-text-muted);
+  --cc-btn-primary-bg: var(--color-accent);
+  --cc-btn-primary-color: var(--color-on-accent);
+  --cc-btn-primary-hover-bg: color-mix(in srgb, var(--color-accent) 85%, black);
+  --cc-btn-primary-hover-color: var(--color-on-accent);
+  --cc-btn-secondary-bg: var(--color-surface-2);
+  --cc-btn-secondary-color: var(--color-text);
+  --cc-btn-secondary-hover-bg: color-mix(in srgb, var(--color-surface-2) 80%, white);
+  --cc-btn-secondary-hover-color: var(--color-text);
+  --cc-separator-border-color: var(--color-border);
+  --cc-toggle-on-bg: var(--color-accent);
+  --cc-toggle-off-bg: var(--color-surface-2);
+  --cc-toggle-on-knob-bg: #ffffff;
+  --cc-toggle-off-knob-bg: var(--color-text-muted);
+  --cc-cookie-category-block-bg: var(--color-surface-2);
+  --cc-cookie-category-block-border: var(--color-border-subtle);
+  --cc-cookie-category-block-hover-bg: var(--color-surface-2);
+  --cc-cookie-category-block-hover-border: var(--color-border);
+  --cc-cookie-category-expanded-block-bg: transparent;
+  --cc-cookie-category-expanded-block-hover-bg: var(--color-surface-2);
+  --cc-overlay-bg: rgb(0 0 0 / 0.6);
+  --cc-btn-border-radius: var(--radius-input);
+  --cc-modal-border-radius: var(--radius-card);
+}
+
+/* Suggerimento lingua dismissibile (creato da main.ts) */
+.lang-hint {
+  position: fixed;
+  top: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  max-width: min(92vw, 28rem);
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-float);
+}
+.lang-hint a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.lang-hint button {
+  color: var(--color-text-muted);
+  font-weight: 600;
+  cursor: pointer;
+}

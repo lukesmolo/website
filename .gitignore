@@ -1,0 +1,29 @@
+# build
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# environment / secrets — MAI nel repo
+.env
+.env.*
+!.env.example
+.dev.vars
+!.dev.vars.example
+
+# cloudflare
+.wrangler/
+
+# artefatti playwright (sessioni di screenshot)
+.playwright-mcp/
+
+# editor & OS
+.DS_Store
+.idea/
+*.swp

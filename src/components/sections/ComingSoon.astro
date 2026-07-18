@@ -1,0 +1,33 @@
+---
+/**
+ * Sezione "Coming soon" — predisposta ma spenta.
+ * DA COMPLETARE: aggiungere i contenuti in src/content/{lingua}/landing.ts
+ * (comingSoon.items) e attivare il flag comingSoon in src/config.ts.
+ */
+import { FLAGS } from '../../config';
+import type { LandingContent } from '../../content/types';
+import SectionTitle from '../SectionTitle.astro';
+
+interface Props {
+  comingSoon: LandingContent['comingSoon'];
+}
+
+const { comingSoon } = Astro.props;
+const visible = FLAGS.comingSoon && comingSoon.items.length > 0;
+---
+
+{
+  visible && (
+    <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+      <SectionTitle title={comingSoon.title} />
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {comingSoon.items.map((item) => (
+          <li class="rounded-card border border-line-subtle bg-surface p-6">
+            <h3 class="text-lg font-bold">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

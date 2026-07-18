@@ -1,0 +1,38 @@
+---
+/**
+ * La landing completa: unica per tutte le lingue, cambia solo il contenuto.
+ */
+import type { Locale } from '../content/types';
+import { getContent } from '../content';
+import Base from '../layouts/Base.astro';
+import Hero from './sections/Hero.astro';
+import Intro from './sections/Intro.astro';
+import HowItWorks from './sections/HowItWorks.astro';
+import WhyPanka from './sections/WhyPanka.astro';
+import Audiences from './sections/Audiences.astro';
+import Testimonials from './sections/Testimonials.astro';
+import ComingSoon from './sections/ComingSoon.astro';
+import Faq from './sections/Faq.astro';
+import FinalCta from './sections/FinalCta.astro';
+import ContactSection from './sections/ContactSection.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { landing, ui } = getContent(locale);
+---
+
+<Base locale={locale} pagePath="/" landing={landing}>
+  <Hero hero={landing.hero} store={ui.store} />
+  <Intro intro={landing.intro} />
+  <HowItWorks howItWorks={landing.howItWorks} store={ui.store} />
+  <WhyPanka why={landing.why} />
+  <Audiences audiences={landing.audiences} />
+  <Testimonials testimonials={landing.testimonials} />
+  <ComingSoon comingSoon={landing.comingSoon} />
+  <Faq faq={landing.faq} />
+  <FinalCta finalCta={landing.finalCta} store={ui.store} />
+  <ContactSection contact={landing.contact} locale={locale} />
+</Base>

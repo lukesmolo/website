@@ -1,0 +1,39 @@
+---
+/**
+ * Selettore lingua: link statici alle pagine parallele (niente redirect
+ * automatici). Un piccolo script in Base.astro conserva l'ancora corrente
+ * quando si cambia lingua.
+ */
+import { LOCALES, getContent, localePath } from '../content';
+import type { Locale } from '../content/types';
+
+interface Props {
+  current: Locale;
+  /** Percorso indipendente dalla lingua della pagina corrente (es. '/', '/privacy') */
+  pagePath: string;
+  label: string;
+}
+
+const { current, pagePath, label } = Astro.props;
+---
+
+<nav class="flex items-center gap-0.5 rounded-full border border-line bg-surface p-0.5" aria-label={label}>
+  {
+    LOCALES.map((locale) => (
+      <a
+        href={localePath(locale, pagePath)}
+        data-lang-link
+        aria-current={locale === current ? 'page' : undefined}
+        aria-label={getContent(locale).ui.languageName}
+        class:list={[
+          'rounded-full px-2.5 py-1.5 text-xs font-bold tracking-wide uppercase transition-colors',
+          locale === current
+            ? 'bg-accent text-on-accent'
+            : 'text-muted hover:bg-highlight hover:text-text',
+        ]}
+      >
+        {locale}
+      </a>
+    ))
+  }
+</nav>

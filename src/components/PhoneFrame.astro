@@ -1,0 +1,64 @@
+---
+/**
+ * Mockup verticale di telefono con dentro uno screenshot dell'app.
+ * Gli screenshot vivono in src/assets/screenshots/ e sono referenziati per
+ * nome file nei contenuti: se il file non esiste ancora, il componente mostra
+ * un placeholder pulito senza rompere la pagina.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { ScreenshotRef } from '../content/types';
+import Logo from './Logo.astro';
+
+interface Props {
+  screenshot: ScreenshotRef;
+  /** true per l'immagine hero (caricamento eager + fetchpriority) */
+  priority?: boolean;
+  class?: string;
+}
+
+const { screenshot, priority = false, class: className = '' } = Astro.props;
+
+const shots = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/screenshots/*.{png,jpg,jpeg,webp}',
+  { eager: true },
+);
+const match = Object.entries(shots).find(([path]) => path.endsWith(`/${screenshot.src}`));
+const image = match ? match[1].default : null;
+---
+
+<figure
+  class:list={[
+    'phone-frame relative mx-auto w-full max-w-[280px] overflow-hidden rounded-[2.2rem] border border-line bg-primary shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:max-w-[300px]',
+    className,
+  ]}
+>
+  <span
+    class="absolute top-2.5 left-1/2 z-10 h-[18px] w-24 -translate-x-1/2 rounded-full bg-black/90"
+    aria-hidden="true"></span>
+  {
+    image ? (
+      <Image
+        src={image}
+        alt={screenshot.alt}
+        widths={[280, 560, 840]}
+        sizes="(max-width: 640px) 280px, 300px"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchpriority={priority ? 'high' : 'auto'}
+        class="block aspect-[39/80] h-auto w-full object-cover object-top"
+      />
+    ) : (
+      <>
+        {/* SCREENSHOT DA COMPLETARE: aggiungere src/assets/screenshots/{screenshot.src} */}
+        <div
+          class="flex aspect-[39/80] w-full flex-col items-center justify-center gap-4 bg-surface px-6 text-center"
+          role="img"
+          aria-label={screenshot.alt}
+        >
+          <Logo class="h-14 text-accent" />
+          <p class="text-xs leading-relaxed text-muted">{screenshot.alt}</p>
+        </div>
+      </>
+    )
+  }
+</figure>

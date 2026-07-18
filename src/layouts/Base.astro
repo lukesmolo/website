@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+import type { LandingContent, Locale } from '../content/types';
+import { getContent, localePath, LOCALES } from '../content';
+import { ANALYTICS, FLAGS } from '../config';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyCta from '../components/StickyCta.astro';
+
+interface Props {
+  locale: Locale;
+  /** Percorso indipendente dalla lingua (es. '/', '/privacy') */
+  pagePath: string;
+  /** Override per le pagine interne; la landing usa ui.meta */
+  title?: string;
+  description?: string;
+  /** Solo landing: nav ad ancore, barra sticky e JSON-LD estesi */
+  landing?: LandingContent;
+}
+
+const { locale, pagePath, title, description, landing } = Astro.props;
+const content = getContent(locale);
+const { ui } = content;
+const isLanding = Boolean(landing);
+
+// Configurazione localizzata letta da src/scripts/main.ts
+const siteConfig = {
+  locale,
+  ga4Id: ANALYTICS.ga4Id,
+  metaPixelId: ANALYTICS.metaPixelId,
+  banner: ui.cookieBanner,
+  langHint: FLAGS.languageHint
+    ? Object.fromEntries(
+        LOCALES.map((l) => [
+          l,
+          { ...getContent(l).ui.langHint, href: localePath(l, pagePath) },
+        ]),
+      )
+    : null,
+  privacyHref: localePath(locale, '/privacy'),
+};
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0a0e14" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Seo
+      locale={locale}
+      title={title ?? ui.meta.title}
+      description={description ?? ui.meta.description}
+      pagePath={pagePath}
+      ogAlt={ui.meta.ogAlt}
+      landing={landing}
+    />
+  </head>
+  <body class:list={[isLanding && 'pb-20 md:pb-0']}>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-card focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
+    >
+      {ui.skipToContent}
+    </a>
+
+    <Header locale={locale} content={content} pagePath={pagePath} withNav={isLanding} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer locale={locale} content={content} />
+
+    {isLanding && <StickyCta store={ui.store} />}
+
+    <script is:inline type="application/json" id="site-config" set:html={JSON.stringify(siteConfig)} />
+    <script src="../scripts/main.ts"></script>
+  </body>
+</html>

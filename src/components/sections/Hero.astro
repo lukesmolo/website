@@ -1,0 +1,37 @@
+---
+import type { LandingContent } from '../../content/types';
+import type { UiContent } from '../../content/types';
+import PhoneFrame from '../PhoneFrame.astro';
+import StoreButtons from '../StoreButtons.astro';
+
+interface Props {
+  hero: LandingContent['hero'];
+  store: UiContent['store'];
+}
+
+const { hero, store } = Astro.props;
+---
+
+<section class="relative overflow-hidden">
+  <div
+    class="pointer-events-none absolute -top-32 left-1/2 h-96 w-[40rem] -translate-x-1/2 rounded-full bg-accent opacity-10 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-14 pb-16 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:pt-24 lg:pb-24"
+  >
+    <div class="text-center lg:text-left">
+      <h1 class="text-4xl leading-tight font-extrabold tracking-tight italic sm:text-5xl lg:text-6xl">
+        {hero.headline}
+      </h1>
+      <p class="mx-auto mt-5 max-w-md text-lg text-muted lg:mx-0 lg:text-xl">
+        {hero.sub}
+      </p>
+      <StoreButtons store={store} location="hero" class="mt-8 justify-center lg:justify-start" />
+    </div>
+
+    <PhoneFrame screenshot={hero.screenshot} priority />
+  </div>
+</section>
