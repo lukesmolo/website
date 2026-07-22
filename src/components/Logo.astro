@@ -1,37 +1,45 @@
 ---
 /**
- * Unico componente logo del sito: carica l'SVG da src/assets/brand/.
- * Per cambiare logo basta sostituire quel file (usa fill="currentColor",
- * quindi eredita il colore dal testo: bianco su fondo scuro, scuro su chiaro).
+ * Unico componente logo del sito. Gli SVG arrivano dal rebranding
+ * (rebranding/V1, Proposta 03) già rifilati in src/assets/brand/.
+ * Il wordmark è artwork: mai ricomporre "Panka" con un font simile.
  */
-import logoSvg from '../assets/brand/logo-mark.svg?raw';
+import wordmark from '../assets/brand/panka-wordmark.svg?raw';
+import wordmarkWhite from '../assets/brand/panka-wordmark-white.svg?raw';
+import wordmarkPaperAmber from '../assets/brand/panka-wordmark-paper-amber.svg?raw';
+import iconGradient from '../assets/brand/panka-icon-gradient.svg?raw';
+import iconFlat from '../assets/brand/panka-icon.svg?raw';
 
 interface Props {
   /** Altezza del logo, classi Tailwind (es. 'h-8') */
   class?: string;
-  /** Mostra anche la scritta PANKA accanto al simbolo */
-  wordmark?: boolean;
+  /**
+   * wordmark: scritta completa verde + k ambra (fondi chiari)
+   * wordmark-white: scritta tutta carta (fondi scuri o fotografici)
+   * wordmark-paper-amber: scritta carta + k ambra (su verde o foto, mockup PDF)
+   * icon: la sola k col gradiente ambra→verde (il "marchio app")
+   * icon-flat: la sola k ambra piatta (contesti piccoli)
+   */
+  variant?: 'wordmark' | 'wordmark-white' | 'wordmark-paper-amber' | 'icon' | 'icon-flat';
 }
 
-const { class: className = 'h-8', wordmark = false } = Astro.props;
+const { class: className = 'h-8', variant = 'wordmark' } = Astro.props;
+
+const svgs: Record<NonNullable<Props['variant']>, string> = {
+  wordmark,
+  'wordmark-white': wordmarkWhite,
+  'wordmark-paper-amber': wordmarkPaperAmber,
+  icon: iconGradient,
+  'icon-flat': iconFlat,
+};
 ---
 
-<span class:list={['logo inline-flex items-center gap-2.5 select-none', className]}>
-  <span class="logo-mark block h-full" set:html={logoSvg} />
-  {wordmark && <span class="logo-word text-current">PANKA</span>}
-</span>
+<span class:list={['logo block select-none', className]} set:html={svgs[variant]} />
 
 <style>
-  .logo-mark :global(svg) {
+  .logo :global(svg) {
     height: 100%;
     width: auto;
     display: block;
-  }
-  .logo-word {
-    font-weight: 800;
-    font-style: italic;
-    letter-spacing: 0.08em;
-    font-size: 1em;
-    line-height: 1;
   }
 </style>

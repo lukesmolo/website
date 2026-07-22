@@ -13,14 +13,14 @@ const { howItWorks, store } = Astro.props;
 ---
 
 <section id="come-funziona" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
-  <SectionTitle title={howItWorks.title} />
+  <SectionTitle title={howItWorks.title} class="reveal" />
 
   <ol class="mt-10 grid gap-12 lg:grid-cols-3 lg:gap-8">
     {
       howItWorks.steps.map((step, i) => (
-        <li class="flex flex-col gap-5">
+        <li class="reveal flex flex-col gap-5" style={`--reveal-delay: ${i * 130}ms`}>
           <div>
-            <span class="text-4xl font-extrabold text-accent italic" aria-hidden="true">
+            <span class="text-4xl font-extrabold text-accent-ink italic" aria-hidden="true">
               {String(i + 1).padStart(2, '0')}
             </span>
             <h3 class="mt-2 text-xl font-bold">{step.title}</h3>

@@ -27,18 +27,19 @@ export const ui: UiContent = {
   footer: {
     tagline: 'El fantasy del vestuario.',
     companyHeading: 'Panka',
-    /* POR COMPLETAR: datos reales de la sociedad (en proceso de constitución) */
+    /* Número REA: añadir aquí cuando esté disponible */
     companyLines: [
-      'Panka S.r.l. — en proceso de constitución [POR COMPLETAR]',
-      'Domicilio social: [POR COMPLETAR]',
-      'NIF-IVA: [POR COMPLETAR]',
+      'Panka S.r.l.',
+      'Viale Aldo Moro 16 — 40127 Bolonia (Italia)',
+      'NIF-IVA y CF 04398091209',
+      'Capital social: 10.000 € totalmente desembolsado',
     ],
     linksHeading: 'Enlaces',
     privacy: 'Política de privacidad',
     cookiePolicy: 'Política de cookies',
     cookiePreferences: 'Preferencias de cookies',
     socialHeading: 'Síguenos',
-    copyright: 'Todos los derechos reservados.',
+    copyright: 'Todos los derechos reservados. Hecho con ❤️ en Bolonia.',
   },
   cookieBanner: {
     title: 'Un balón, cero rastreos escondidos',

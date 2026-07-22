@@ -8,7 +8,7 @@ export const legal: LegalContent = {
     updated: 'Última actualización: [POR COMPLETAR]',
     body: [
       '[POR COMPLETAR] Esta página describirá cómo Panka trata los datos personales recogidos a través de la web: datos del formulario de contacto (nombre, email, nombre del equipo, mensaje, idioma), finalidades, base jurídica, plazos de conservación, derechos del interesado y contacto del responsable.',
-      '[POR COMPLETAR] Responsable del tratamiento: Panka S.r.l. (en proceso de constitución), domicilio y contacto por definir.',
+      '[POR COMPLETAR] Responsable del tratamiento: Panka S.r.l., Viale Aldo Moro 16, 40127 Bolonia (Italia) — NIF-IVA y CF 04398091209.',
       '[POR COMPLETAR] Los datos del formulario se almacenan en Supabase (UE) y se usan solo para responder a las solicitudes. Sin venta ni cesión a terceros.',
     ],
   },

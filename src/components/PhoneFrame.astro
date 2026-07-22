@@ -29,13 +29,10 @@ const image = match ? match[1].default : null;
 
 <figure
   class:list={[
-    'phone-frame relative mx-auto w-full max-w-[280px] overflow-hidden rounded-[2.2rem] border border-line bg-primary shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:max-w-[300px]',
+    'phone-frame relative mx-auto w-full max-w-[280px] overflow-hidden rounded-[2.2rem] border border-line bg-primary shadow-[0_20px_60px_rgb(26_31_27/0.25)] sm:max-w-[300px]',
     className,
   ]}
 >
-  <span
-    class="absolute top-2.5 left-1/2 z-10 h-[18px] w-24 -translate-x-1/2 rounded-full bg-black/90"
-    aria-hidden="true"></span>
   {
     image ? (
       <Image
@@ -55,7 +52,7 @@ const image = match ? match[1].default : null;
           role="img"
           aria-label={screenshot.alt}
         >
-          <Logo class="h-14 text-accent" />
+          <Logo class="h-16" variant="icon" />
           <p class="text-xs leading-relaxed text-muted">{screenshot.alt}</p>
         </div>
       </>

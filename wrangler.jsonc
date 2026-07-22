@@ -5,15 +5,24 @@
   "name": "panka-website",
   "main": "worker/index.ts",
   "compatibility_date": "2026-07-01",
+  // URL di anteprima .workers.dev: va tenuto ESPLICITAMENTE attivo, altrimenti
+  // aggiungendo un dominio custom Cloudflare lo disattiva.
+  "workers_dev": true,
+  // Dominio pubblico panka.app. Al deploy Cloudflare crea record DNS e
+  // certificato HTTPS. In parallelo resta attivo anche l'URL .workers.dev.
+  "routes": [
+    { "pattern": "panka.app", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
     // Su Workers il fallback 404 va dichiarato esplicitamente
     // (a differenza di Pages non è automatico): serve dist/404.html.
     "not_found_handling": "404-page",
-    // Le richieste /api/* passano SEMPRE prima dal Worker (form contatti);
-    // tutto il resto è servito direttamente dagli asset statici (più veloce).
-    "run_worker_first": ["/api/*"]
+    // Anteprima privata: il Worker gira PRIMA di ogni richiesta, così può
+    // chiedere la password (Basic Auth) anche sulle pagine statiche.
+    // Per il sito pubblico definitivo puoi tornare a ["/api/*"].
+    "run_worker_first": true
   },
   "vars": {
     // Non segreti: modificabili qui. I segreti vanno in `wrangler secret put`.

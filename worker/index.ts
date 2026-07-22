@@ -9,6 +9,8 @@
 
 export interface Env {
   ASSETS: Fetcher;
+  /** Se impostata, l'intero sito è protetto da password (anteprima privata). */
+  PREVIEW_PASSWORD?: string;
   SUPABASE_URL?: string;
   SUPABASE_SERVICE_ROLE_KEY?: string;
   RESEND_API_KEY?: string;
@@ -156,8 +158,46 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
   return json({ ok: true });
 }
 
+/** Confronto in tempo costante: non rivela la password tramite timing. */
+function safeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+/**
+ * Anteprima privata via HTTP Basic Auth.
+ * - Se `PREVIEW_PASSWORD` NON è impostata: il sito è pubblico.
+ * - Se è impostata: ogni richiesta richiede quella password (username ignorato).
+ */
+function isAuthorized(request: Request, env: Env): boolean {
+  const expected = env.PREVIEW_PASSWORD;
+  if (!expected) return true;
+  const header = request.headers.get('Authorization') ?? '';
+  if (!header.startsWith('Basic ')) return false;
+  let decoded: string;
+  try {
+    decoded = atob(header.slice(6));
+  } catch {
+    return false;
+  }
+  const password = decoded.slice(decoded.indexOf(':') + 1);
+  return safeEqual(password, expected);
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    // Cancello anteprima: se è configurata la password, blocca tutto il sito.
+    if (!isAuthorized(request, env)) {
+      return new Response('Autenticazione richiesta.', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Panka — anteprima privata", charset="UTF-8"',
+        },
+      });
+    }
+
     const url = new URL(request.url);
 
     if (url.pathname === '/api/contact') {

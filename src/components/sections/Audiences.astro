@@ -1,5 +1,6 @@
 ---
 import type { LandingContent } from '../../content/types';
+import Icon from '../Icon.astro';
 
 interface Props {
   audiences: LandingContent['audiences'];
@@ -8,20 +9,25 @@ interface Props {
 const { audiences } = Astro.props;
 ---
 
-<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
-  <h2 class="mx-auto max-w-2xl text-center text-2xl font-extrabold tracking-tight italic sm:text-3xl">
-    {audiences.title}
-  </h2>
-
-  <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-    {
-      audiences.items.map((item) => (
-        <li class="rounded-card border border-line-subtle bg-surface p-6">
-          <span class="block h-1 w-8 rounded-sm bg-accent" aria-hidden="true" />
-          <h3 class="mt-4 text-lg font-bold">{item.title}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
-        </li>
-      ))
-    }
-  </ul>
+<section class="relative overflow-hidden">
+  <div
+    class="pointer-events-none absolute top-1/2 left-1/2 h-72 w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent opacity-[0.06] blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="reveal relative mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+    <span
+      class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent-ink"
+    >
+      <Icon name="ball" class="h-6 w-6" />
+    </span>
+    <h2
+      class="mx-auto mt-5 max-w-2xl text-center text-2xl font-extrabold tracking-tight text-primary sm:text-3xl"
+    >
+      {audiences.title}
+    </h2>
+    <p class="mx-auto mt-6 max-w-2xl text-center leading-relaxed text-muted sm:text-lg">
+      {audiences.body}
+    </p>
+  </div>
 </section>

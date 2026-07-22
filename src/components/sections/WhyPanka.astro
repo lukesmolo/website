@@ -1,52 +1,76 @@
 ---
+/**
+ * Sezione "Perché giocare a Panka": tabella dei motivi per usare l'app,
+ * una colonna per i giocatori e una per i coach, più la foto a spezzare.
+ */
 import { Image } from 'astro:assets';
 import type { LandingContent } from '../../content/types';
 import SectionTitle from '../SectionTitle.astro';
-import RolesTable from './RolesTable.astro';
-import fieldPhoto from '../../assets/photos/amateur-football.jpg';
+import Icon from '../Icon.astro';
+import Logo from '../Logo.astro';
+import fieldPhoto from '../../assets/photos/goal.jpg';
 
 interface Props {
   why: LandingContent['why'];
 }
 
 const { why } = Astro.props;
+
+/* Un'icona per ogni motivo, nello stesso ordine dei contenuti */
+const groups = [
+  { ...why.player, icons: ['shirt', 'zap', 'chart', 'chat'] },
+  { ...why.coach, icons: ['clipboard', 'send', 'star', 'users'] },
+];
 ---
 
 <section id="perche-panka" class="border-t border-line-subtle bg-surface">
   <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
-    <SectionTitle title={why.title} />
+    <SectionTitle title={why.title} class="reveal" />
 
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-5">
+    <div class="mt-10 grid gap-4 sm:gap-5 lg:grid-cols-2">
       {
-        why.blocks.slice(0, 2).map((block) => (
-          <article class="rounded-card border border-line-subtle bg-primary p-6">
-            <h3 class="text-lg font-bold">{block.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-muted sm:text-base">{block.body}</p>
+        groups.map((group, gi) => (
+          <article
+            class="reveal overflow-hidden rounded-card border border-line-subtle bg-bg transition-colors hover:border-line"
+            style={`--reveal-delay: ${gi * 150}ms`}
+          >
+            <h3 class="border-b border-line-subtle bg-surface-2 px-6 py-4 text-xs font-bold tracking-widest uppercase">
+              <span class="mr-2 inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+              {group.label}
+            </h3>
+            <ul>
+              {group.reasons.map((reason, i) => (
+                <li class="group flex gap-4 border-t border-line-subtle px-6 py-5 transition-colors first:border-t-0 hover:bg-highlight">
+                  <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-input bg-accent-soft text-accent-ink transition-transform duration-300 group-hover:scale-110">
+                    <Icon name={group.icons[i] ?? 'ball'} class="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h4 class="text-lg font-bold">{reason.title}</h4>
+                    <p class="mt-2 text-sm leading-relaxed text-muted sm:text-base">{reason.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </article>
         ))
       }
     </div>
 
-    {/* Foto di calcio amatoriale (Unsplash, ottimizzata in locale) a spezzare la sezione */}
-    <Image
-      src={fieldPhoto}
-      alt={why.photoAlt}
-      widths={[480, 800, 1200, 1600]}
-      sizes="(max-width: 1152px) 100vw, 1152px"
-      class="mt-5 aspect-[2/1] w-full rounded-card border border-line-subtle object-cover sm:aspect-[5/2]"
-    />
-
-    <div class="mt-5 grid gap-4 sm:grid-cols-2 sm:gap-5">
-      {
-        why.blocks.slice(2).map((block) => (
-          <article class="rounded-card border border-line-subtle bg-primary p-6">
-            <h3 class="text-lg font-bold">{block.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-muted sm:text-base">{block.body}</p>
-          </article>
-        ))
-      }
+    {/* La porta di calcio del PDF proposte, con il wordmark sovrapposto come nel mockup */}
+    <div class="reveal relative mt-5 overflow-hidden rounded-card border border-line-subtle">
+      <Image
+        src={fieldPhoto}
+        alt={why.photoAlt}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 1152px) 100vw, 1152px"
+        class="aspect-[2/1] w-full object-cover sm:aspect-[5/2]"
+      />
+      <span
+        class="absolute inset-0 flex items-center justify-center bg-text/25"
+        aria-hidden="true"
+      >
+        <Logo variant="wordmark-paper-amber" class="h-10 drop-shadow-md sm:h-14" />
+      </span>
     </div>
-
-    <RolesTable roles={why.roles} />
   </div>
 </section>

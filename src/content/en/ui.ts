@@ -27,18 +27,19 @@ export const ui: UiContent = {
   footer: {
     tagline: 'Fantasy football, straight from the locker room.',
     companyHeading: 'Panka',
-    /* TO BE COMPLETED: real company details (company being incorporated) */
+    /* REA number: add here once available */
     companyLines: [
-      'Panka S.r.l. — being incorporated [TO BE COMPLETED]',
-      'Registered office: [TO BE COMPLETED]',
-      'VAT: [TO BE COMPLETED]',
+      'Panka S.r.l.',
+      'Viale Aldo Moro 16 — 40127 Bologna, Italy',
+      'VAT and tax code 04398091209',
+      'Share capital €10,000 fully paid up',
     ],
     linksHeading: 'Links',
     privacy: 'Privacy policy',
     cookiePolicy: 'Cookie policy',
     cookiePreferences: 'Cookie preferences',
     socialHeading: 'Follow us',
-    copyright: 'All rights reserved.',
+    copyright: 'All rights reserved. Made with ❤️ in Bologna.',
   },
   cookieBanner: {
     title: 'One ball, no hidden tracking',

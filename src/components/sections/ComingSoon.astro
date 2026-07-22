@@ -1,12 +1,12 @@
 ---
 /**
- * Sezione "Coming soon" — predisposta ma spenta.
- * DA COMPLETARE: aggiungere i contenuti in src/content/{lingua}/landing.ts
- * (comingSoon.items) e attivare il flag comingSoon in src/config.ts.
+ * Sezione "Coming soon" — si spegne dal flag comingSoon in src/config.ts.
+ * I contenuti sono in src/content/{lingua}/landing.ts (comingSoon).
  */
 import { FLAGS } from '../../config';
 import type { LandingContent } from '../../content/types';
 import SectionTitle from '../SectionTitle.astro';
+import Icon from '../Icon.astro';
 
 interface Props {
   comingSoon: LandingContent['comingSoon'];
@@ -14,16 +14,30 @@ interface Props {
 
 const { comingSoon } = Astro.props;
 const visible = FLAGS.comingSoon && comingSoon.items.length > 0;
+
+/* Un'icona per ogni novità, nello stesso ordine dei contenuti */
+const icons = ['avatar', 'share', 'trending', 'chart', 'sparkles', 'trophy'];
 ---
 
 {
   visible && (
     <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
-      <SectionTitle title={comingSoon.title} />
+      <SectionTitle title={comingSoon.title} class="reveal" />
+      {comingSoon.intro && (
+        <p class="reveal mt-4 max-w-2xl pl-4 text-muted sm:text-lg" style="--reveal-delay: 100ms">
+          {comingSoon.intro}
+        </p>
+      )}
       <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {comingSoon.items.map((item) => (
-          <li class="rounded-card border border-line-subtle bg-surface p-6">
-            <h3 class="text-lg font-bold">{item.title}</h3>
+        {comingSoon.items.map((item, i) => (
+          <li
+            class="reveal group rounded-card border border-line-subtle bg-surface p-6 transition-colors hover:-translate-y-1 hover:border-line"
+            style={`--reveal-delay: ${(i % 3) * 100}ms`}
+          >
+            <span class="flex h-11 w-11 items-center justify-center rounded-input bg-accent-soft text-accent-ink transition-transform duration-300 group-hover:scale-110">
+              <Icon name={icons[i] ?? 'ball'} class="h-5 w-5" />
+            </span>
+            <h3 class="mt-4 text-lg font-bold">{item.title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
           </li>
         ))}

@@ -8,6 +8,7 @@ import type { LandingContent } from '../types';
 export const landing: LandingContent = {
   hero: {
     headline: 'Fantasy football, straight from the locker room.',
+    highlight: 'Fantasy football',
     sub: 'Panka is the fantasy game where you field your own teammates. The real ones.',
     cta: 'Download the app',
     screenshot: {
@@ -30,7 +31,7 @@ export const landing: LandingContent = {
     steps: [
       {
         title: 'Download the app and find your team.',
-        body: 'You join your squad with an invite code. You and your teammates each get a value in credits, based on your position and what you have actually shown on the pitch.',
+        body: 'You join your squad with an invite code. You and your teammates each get a value in credits, based on your position and what you have actually shown on the pitch. Don’t take it personally if the striker is worth more than you!',
         screenshot: {
           src: 'onboarding.png',
           alt: 'The Panka team onboarding screen with the invite code',
@@ -38,7 +39,7 @@ export const landing: LandingContent = {
       },
       {
         title: 'Pick your lineup.',
-        body: 'Before the match you choose who to field. You have a credit budget and you cannot afford everyone: you have to commit to a plan. You can even field fewer than 11 to afford the expensive players, while squad bonuses reward the braver calls.',
+        body: 'Before the match you choose who to field. You have a credit budget and you cannot afford everyone: you have to commit to a plan. You can even leave a few slots empty to afford the expensive players, while modifiers reward the braver calls.',
         screenshot: {
           src: 'lineup.png',
           alt: 'Panka lineup builder: the squad list with player costs and remaining budget',
@@ -46,7 +47,7 @@ export const landing: LandingContent = {
       },
       {
         title: 'Find out the gaffer’s ratings.',
-        body: 'After the match the coach (or an admin) enters the ratings. The better your picks play, the higher your score. The app does all the maths with real ratings, goals and the modifiers your team has set, and updates the leaderboard.',
+        body: 'This is where the tension kicks in. After the match the coach (or an admin) enters the ratings. The better your picks play, the higher your score. The app does all the maths with real ratings, goals and the modifiers your team has set, and updates the leaderboard.',
         screenshot: {
           src: 'field-votes.png',
           alt: 'The Panka pitch view with the fielded lineup and each player’s rating',
@@ -57,70 +58,54 @@ export const landing: LandingContent = {
 
   why: {
     title: 'Why play Panka',
-    blocks: [
-      {
-        title: 'Because you field the people you play with',
-        body: 'You are backing your full-back who makes one covering run a season, your captain who plays strapped up in four ankle braces, the super-sub who gets one minute but has a wand of a foot — or yourself. No TV superstars: you build your lineup with the same people you walk off the pitch with every week.',
-      },
-      {
-        title: 'Because it keeps everything in one place',
-        body: 'Lineups, ratings, report cards, the table. All inside the app. No more squinting at blurry photos in the group chat or waiting for a league portal to update.',
-      },
-      {
-        title: 'Because it’s a game within the game',
-        body: 'If your lot already give 110% on the pitch, now there is one more reason. Even a sprint or a sliding tackle can be worth the half-point that wins you the matchday.',
-      },
-      {
-        title: 'Because the banter is guaranteed',
-        body: '“I picked you today — get me a worldie, yeah?”. Panka lights up the dressing room before kick-off and keeps the team chat going all week long.',
-      },
-    ],
-    photoAlt: 'Amateur football match: players on the pitch at sunset',
-    roles: {
-      title: 'Who does what in the app',
-      intro: 'Every team has players and staff (coach or admin). Here is who can do what:',
-      playerLabel: 'Player',
-      staffLabel: 'Coach / Admin',
-      adminOnlyLabel: 'Admin only',
-      yesLabel: 'Yes',
-      noLabel: '—',
-      rows: [
-        { feature: 'Field their own lineup within the credit budget', player: 'yes', staff: 'yes' },
-        { feature: 'See ratings, report cards and the leaderboard', player: 'yes', staff: 'yes' },
-        { feature: 'Appear in the fantasy leaderboard', player: 'yes', staff: 'admin' },
-        { feature: 'Upload their photo and manage their profile', player: 'yes', staff: 'yes' },
-        { feature: 'Create matches and call up players', player: 'no', staff: 'yes' },
-        { feature: 'Enter ratings and report cards after the match', player: 'no', staff: 'yes' },
-        { feature: 'Close the match and calculate the scores', player: 'no', staff: 'yes' },
-        { feature: 'Manage the roster and player credit values', player: 'no', staff: 'yes' },
-        { feature: 'Set bonuses, modifiers and the budget', player: 'no', staff: 'admin' },
-        { feature: 'Create tournaments and manage seasons', player: 'no', staff: 'yes' },
-        { feature: 'Generate invite codes and manage members', player: 'no', staff: 'admin' },
-        { feature: 'Medical certificates, dues and training sessions', player: 'no', staff: 'yes' },
+    player: {
+      label: 'If you’re a player',
+      reasons: [
+        {
+          title: 'You field the people you play with',
+          body: 'Forget TV superstars: here you put everything on your full-back who makes one covering run a season, on your captain strapped into four ankle braces and — if you’ve got the nerve — on yourself.',
+        },
+        {
+          title: 'A game within the game',
+          body: 'If you already give everything for the shirt, now you’ll give everything for Panka too. Every sprint, recovery run or last-minute cross is worth that extra half-point that wins you the matchday.',
+        },
+        {
+          title: 'All your stats in your pocket',
+          body: 'Average rating, goals, assists and how your performances trend through the season. All saved on your personal profile.',
+        },
+        {
+          title: 'Banter guaranteed',
+          body: '“I picked you today — get me a worldie, yeah?”. Panka lights up the dressing room before kick-off and keeps the team chat going all week long.',
+        },
       ],
     },
+    coach: {
+      label: 'If you’re a coach',
+      reasons: [
+        {
+          title: 'No more scattered sheets and lost files',
+          body: 'Track training attendance, paid dues and medical check-up deadlines straight from the app.',
+        },
+        {
+          title: 'Call everyone up with one tap',
+          body: 'Build your match-day squad list on Panka and send it automatically to the team’s WhatsApp group, formatted and ready with all the match info.',
+        },
+        {
+          title: 'Quick and easy ratings',
+          body: 'Enter the ratings at full time from the app. Panka does all the fantasy-point maths for the whole team automatically. You’ve never seen your lads this motivated.',
+        },
+        {
+          title: 'Your roster under control',
+          body: 'All your squad’s stats at your fingertips. One glance is enough to see who’s in form and who’s earned a spell on the bench.',
+        },
+      ],
+    },
+    photoAlt: 'Football goal on an amateur pitch, with the Panka logo',
   },
 
   audiences: {
-    title: 'If you play football with a real team, Panka is for you.',
-    items: [
-      {
-        title: 'Amateur teams',
-        body: 'Seven-a-side and eleven-a-side. The Monday-night league or the Sunday-morning kickabout.',
-      },
-      {
-        title: 'Local leagues and grassroots competitions',
-        body: 'Amateur federations and local leagues that want to give their members an official app and one more reason to show up.',
-      },
-      {
-        title: 'Youth teams',
-        body: 'Junior sides that want to build team spirit and get fired up with modern game dynamics.',
-      },
-      {
-        title: 'Groups of friends',
-        body: 'Anyone who organises a weekly game and wants to turn the kickabout into a fantasy league.',
-      },
-    ],
+    title: 'Who Panka is for',
+    body: 'Panka is for everyone, whether you play in a serious league or meet up on Tuesday nights for a game with friends. The level doesn’t matter: if there’s a team, there’s a fantasy league to play in the locker room. Right now we only support football, but we’re already working on bringing in other team sports.',
   },
 
   testimonials: {
@@ -140,9 +125,33 @@ export const landing: LandingContent = {
 
   comingSoon: {
     title: 'Coming soon',
-    /* TO BE COMPLETED: "Coming soon" section content.
-       The section stays off while flags.comingSoon is false in src/config.ts */
-    items: [],
+    intro: 'Panka is already good to go — arguments included — but we’re building new features for the seasons ahead. Here’s what’s landing in the app soon:',
+    items: [
+      {
+        title: 'Custom avatars',
+        body: 'Create your own digital caricature in the app and make your card one of a kind.',
+      },
+      {
+        title: 'Ready-to-share social graphics',
+        body: 'Automatically generate cards for the matchday MVPs, the Top 11, results or the leaderboard, ready to post on your socials.',
+      },
+      {
+        title: 'Automatic dynamic pricing',
+        body: 'Player credit values will rise and fall automatically through the season, calculated by an algorithm based on real ratings.',
+      },
+      {
+        title: 'Advanced stats',
+        body: 'Performance charts and a detailed history of your season, just like the pros.',
+      },
+      {
+        title: 'AI assistant',
+        body: 'A virtual helper built on the stats to pick your best possible lineup every matchday.',
+      },
+      {
+        title: 'Awards and trophies',
+        body: 'Custom trophies, celebration cards and everything you need to gloat right in your teammates’ faces.',
+      },
+    ],
   },
 
   faq: {
@@ -151,32 +160,32 @@ export const landing: LandingContent = {
       {
         question: 'Is Panka free?',
         answer:
-          'Yes. Panka is in its pilot phase and the app is completely free. Optional premium features may come later, but the core game — lineups, ratings, leaderboard — will remain available to your team.',
+          'Yes. You download the app, join your group and start playing. No subscription, no hidden costs. Except the round of beers you’ll owe the winner.',
       },
       {
-        question: 'Is it football only?',
+        question: 'Can I use Panka for another sport?',
         answer:
-          'Today Panka is built for football, seven-a-side and eleven-a-side. The architecture is already prepared for other team sports though: that is a future plan we are working on.',
+          'If you play basketball, volleyball, rugby or anything else and want to try it, write to us. Right now we’re tuned for football, but we’re already working on covering other team sports — and we need teams up for anything to test the new versions!',
       },
       {
-        question: 'Who enters the ratings?',
+        question: 'Who enters the ratings and report cards?',
         answer:
-          'The coach or a team admin, after every match: a 0–10 rating (half points allowed) plus goals, assists and cards. The app calculates the fantasy scores on its own and updates the leaderboard.',
+          'The coach, a club official, or whoever in the team has the will — and the nerve — to hand out ratings. Whoever manages the group enters them straight from the app at full time, and from that moment anything can happen in the locker room.',
       },
       {
-        question: 'How many players do we need? Does everyone have to install the app?',
+        question: 'How many players do we need?',
         answer:
-          'No, not everyone needs the app. Whoever manages the team creates a card for every player: teammates without the app still appear in the roster, get rated and can be fielded. The app is only needed by those who want to set their own lineup and play fantasy — and even a handful of participants is enough to start.',
+          'How many friends do you usually play fantasy football with? Exactly. The more of you there are, the more fun it gets, but there’s no minimum to start (we suggest at least 5 of you). And if someone in the team can’t be bothered to download the app, no problem: an admin can add the whole roster anyway, so you can field even those who haven’t signed up yet.',
       },
       {
         question: 'How do the modifiers work?',
         answer:
-          'Every team sets its own rules. There are individual bonuses and penalties (for example goal +3, assist +1, yellow card −0.5), department bonuses when your defence, midfield or attack all play well together, and a goalkeeper bonus when your number 1 has a blinder. The admin can tune every value and the credit budget from the settings.',
+          'Just like classic fantasy football: meet certain criteria (say, a particular formation or a high goalkeeper rating) and you unlock bonus points added to your score. Modifiers are there to reward tactics, but they’re not mandatory: you can decide together whether to use them, how to customise them, or to ignore them entirely and keep things classic. Your locker room, your rules.',
       },
       {
         question: 'Is my data safe?',
         answer:
-          'Yes. Your team’s data lives on secure cloud infrastructure, is visible only to members of your group, and is never sold or shared with third parties for commercial purposes. You can request the deletion of your account and data at any time.',
+          'Yes. Panka doesn’t share data with third parties. Your team’s info, ratings and leaderboards are private and only accessible to the members invited with the team code.',
       },
     ],
   },

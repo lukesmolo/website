@@ -8,7 +8,7 @@ export const legal: LegalContent = {
     updated: 'Ultimo aggiornamento: [DA COMPLETARE]',
     body: [
       '[DA COMPLETARE] Questa pagina descriverà come Panka tratta i dati personali raccolti tramite il sito: dati del form contatti (nome, email, nome squadra, messaggio, lingua), finalità del trattamento, base giuridica, tempi di conservazione, diritti dell’interessato e contatti del titolare.',
-      '[DA COMPLETARE] Titolare del trattamento: Panka S.r.l. (in fase di costituzione), sede legale e contatti da definire.',
+      '[DA COMPLETARE] Titolare del trattamento: Panka S.r.l., Viale Aldo Moro 16, 40127 Bologna — P.IVA e C.F. 04398091209.',
       '[DA COMPLETARE] I dati del form vengono conservati su Supabase (UE) e usati solo per rispondere alle richieste. Nessuna vendita o cessione a terzi.',
     ],
   },

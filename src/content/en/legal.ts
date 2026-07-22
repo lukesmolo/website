@@ -8,7 +8,7 @@ export const legal: LegalContent = {
     updated: 'Last updated: [TO BE COMPLETED]',
     body: [
       '[TO BE COMPLETED] This page will describe how Panka processes personal data collected through the site: contact-form data (name, email, team name, message, language), purposes, legal basis, retention, data-subject rights and controller contacts.',
-      '[TO BE COMPLETED] Data controller: Panka S.r.l. (being incorporated), registered office and contacts to be defined.',
+      '[TO BE COMPLETED] Data controller: Panka S.r.l., Viale Aldo Moro 16, 40127 Bologna, Italy — VAT and tax code 04398091209.',
       '[TO BE COMPLETED] Form data is stored on Supabase (EU) and used only to answer requests. No sale or transfer to third parties.',
     ],
   },

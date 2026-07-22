@@ -10,15 +10,18 @@ interface Props {
 const { intro } = Astro.props;
 ---
 
-<section class="border-t border-line-subtle bg-surface">
+{/* Banda verde piena, come le sezioni verdi dei mockup della Proposta 03 */}
+<section class="bg-primary">
   <div
     class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:py-24"
   >
-    <PhoneFrame screenshot={intro.screenshot} class="order-2 lg:order-1" />
+    <div class="reveal order-2 lg:order-1" style="--reveal-delay: 120ms">
+      <PhoneFrame screenshot={intro.screenshot} />
+    </div>
 
-    <div class="order-1 lg:order-2">
-      <SectionTitle title={intro.title} />
-      <p class="mt-5 text-base leading-relaxed text-muted sm:text-lg">{intro.body}</p>
+    <div class="reveal order-1 lg:order-2">
+      <SectionTitle title={intro.title} tone="onPrimary" />
+      <p class="mt-5 text-base leading-relaxed text-on-primary/85 sm:text-lg">{intro.body}</p>
     </div>
   </div>
 </section>

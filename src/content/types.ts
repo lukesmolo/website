@@ -6,13 +6,11 @@
 
 export type Locale = 'it' | 'en' | 'es';
 
-/** 'yes' | 'no' | 'admin' — 'admin' = disponibile solo per il ruolo admin */
-export type RoleCapability = 'yes' | 'no' | 'admin';
-
-export interface RolesTableRow {
-  feature: string;
-  player: RoleCapability;
-  staff: RoleCapability;
+/** Colonna della tabella "Perché giocare a Panka": motivi per un ruolo */
+export interface ReasonGroup {
+  /** Intestazione della colonna, es. "Se sei un giocatore" */
+  label: string;
+  reasons: { title: string; body: string }[];
 }
 
 export interface Testimonial {
@@ -48,6 +46,8 @@ export interface ScreenshotRef {
 export interface LandingContent {
   hero: {
     headline: string;
+    /** Parte di headline evidenziata in ambra corsivo (deve comparire nel testo) */
+    highlight?: string;
     sub: string;
     cta: string;
     screenshot: ScreenshotRef;
@@ -63,22 +63,14 @@ export interface LandingContent {
   };
   why: {
     title: string;
-    blocks: { title: string; body: string }[];
+    /** Tabella dei motivi per usare l'app: una colonna per i giocatori, una per i coach */
+    player: ReasonGroup;
+    coach: ReasonGroup;
     photoAlt: string;
-    roles: {
-      title: string;
-      intro: string;
-      playerLabel: string;
-      staffLabel: string;
-      adminOnlyLabel: string;
-      yesLabel: string;
-      noLabel: string;
-      rows: RolesTableRow[];
-    };
   };
   audiences: {
     title: string;
-    items: { title: string; body: string }[];
+    body: string;
   };
   testimonials: {
     title: string;
@@ -86,7 +78,9 @@ export interface LandingContent {
   };
   comingSoon: {
     title: string;
-    /* DA COMPLETARE: sezione predisposta ma vuota; si attiva da src/config.ts */
+    /** Frase introduttiva sopra l'elenco delle novità */
+    intro?: string;
+    /* La sezione si accende/spegne dal flag comingSoon in src/config.ts */
     items: { title: string; body: string }[];
   };
   faq: {
@@ -151,7 +145,7 @@ export interface UiContent {
   footer: {
     tagline: string;
     companyHeading: string;
-    /* DA COMPLETARE: dati societari reali (S.r.l. in costituzione) */
+    /** Dati societari (ragione sociale, sede, P.IVA, capitale; REA quando disponibile) */
     companyLines: string[];
     linksHeading: string;
     privacy: string;

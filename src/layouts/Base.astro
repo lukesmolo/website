@@ -48,10 +48,13 @@ const siteConfig = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0a0e14" />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0c6f1e" />
+    {/* Attiva il reveal allo scroll: senza JS gli elementi .reveal restano visibili */}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {/* ?v=2: cache-bust del rebranding — i browser tengono le favicon a lungo */}
+    <link rel="icon" href="/favicon.ico?v=2" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <Seo
@@ -71,17 +74,42 @@ const siteConfig = {
       {ui.skipToContent}
     </a>
 
-    <Header locale={locale} content={content} pagePath={pagePath} withNav={isLanding} />
+    {/* La pagina intera è una card color carta sulla cornice gradiente */}
+    <div class="page-shell">
+      <Header locale={locale} content={content} pagePath={pagePath} withNav={isLanding} />
 
-    <main id="main">
-      <slot />
-    </main>
+      <main id="main">
+        <slot />
+      </main>
 
-    <Footer locale={locale} content={content} />
+      <Footer locale={locale} content={content} />
+    </div>
 
     {isLanding && <StickyCta store={ui.store} />}
 
     <script is:inline type="application/json" id="site-config" set:html={JSON.stringify(siteConfig)} />
     <script src="../scripts/main.ts"></script>
+    <script>
+      // Reveal allo scroll: aggiunge .is-visible agli elementi .reveal quando
+      // entrano in viewport (stili in global.css). Separato da main.ts così le
+      // animazioni funzionano anche se il bundle principale fallisce.
+      const revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -8% 0px' },
+        );
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
   </body>
 </html>

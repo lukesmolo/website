@@ -15,8 +15,8 @@ export const STORE_LINKS = {
 
 /** Flag per accendere/spegnere intere sezioni senza cancellarle. */
 export const FLAGS = {
-  /** Sezione "Coming soon": predisposta ma vuota (DA COMPLETARE) */
-  comingSoon: false,
+  /** Sezione "Coming soon" con le funzioni in sviluppo */
+  comingSoon: true,
   /** Suggerimento lingua dismissibile (nessun redirect automatico) */
   languageHint: true,
 } as const;

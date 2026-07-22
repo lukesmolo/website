@@ -7,13 +7,22 @@ interface Props {
   id?: string;
   /** Livello del titolo (default h2) */
   as?: 'h1' | 'h2' | 'h3';
+  /** onPrimary = titolo su banda verde (testo carta) */
+  tone?: 'default' | 'onPrimary';
   class?: string;
 }
 
-const { title, id, as: Tag = 'h2', class: className = '' } = Astro.props;
+const { title, id, as: Tag = 'h2', tone = 'default', class: className = '' } = Astro.props;
 ---
 
-<Tag class:list={['flex items-start gap-3 text-2xl font-extrabold tracking-tight text-balance sm:text-3xl', className]} id={id}>
+<Tag
+  class:list={[
+    'flex items-start gap-3 text-2xl font-extrabold tracking-tight text-balance sm:text-3xl',
+    tone === 'onPrimary' ? 'text-on-primary' : 'text-primary',
+    className,
+  ]}
+  id={id}
+>
   <span class="mt-1.5 block h-6 w-1 shrink-0 rounded-sm bg-accent sm:h-7" aria-hidden="true"></span>
   <span>{title}</span>
 </Tag>

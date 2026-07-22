@@ -14,16 +14,19 @@ const { faq } = Astro.props;
 ---
 
 <section id="faq" class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
-  <SectionTitle title={faq.title} />
+  <SectionTitle title={faq.title} class="reveal" />
 
   <div class="mt-8 space-y-3">
     {
-      faq.items.map((item) => (
-        <details class="group rounded-card border border-line-subtle bg-surface">
+      faq.items.map((item, i) => (
+        <details
+          class="reveal group rounded-card border border-line-subtle bg-surface transition-colors open:border-line hover:border-line"
+          style={`--reveal-delay: ${i * 60}ms`}
+        >
           <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
             {item.question}
             <svg
-              class="h-5 w-5 shrink-0 text-accent transition-transform group-open:rotate-180"
+              class="h-5 w-5 shrink-0 text-accent-ink transition-transform group-open:rotate-180"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

@@ -27,18 +27,19 @@ export const ui: UiContent = {
   footer: {
     tagline: 'Il fanta da spogliatoio.',
     companyHeading: 'Panka',
-    /* DA COMPLETARE: dati societari reali (S.r.l. in fase di costituzione) */
+    /* Numero REA: da aggiungere qui quando disponibile */
     companyLines: [
-      'Panka S.r.l. — in fase di costituzione [DA COMPLETARE]',
-      'Sede legale: [DA COMPLETARE]',
-      'P.IVA: [DA COMPLETARE]',
+      'Panka S.r.l.',
+      'Viale Aldo Moro 16 — 40127 Bologna',
+      'P.IVA e C.F. 04398091209',
+      'Capitale sociale € 10.000 i.v.',
     ],
     linksHeading: 'Link utili',
     privacy: 'Privacy policy',
     cookiePolicy: 'Cookie policy',
     cookiePreferences: 'Preferenze cookie',
     socialHeading: 'Seguici',
-    copyright: 'Tutti i diritti riservati.',
+    copyright: 'Tutti i diritti riservati. Fatto con ❤️ a Bologna.',
   },
   cookieBanner: {
     title: 'Un pallone, zero tracciamenti nascosti',
@@ -67,7 +68,7 @@ export const ui: UiContent = {
   meta: {
     title: 'Panka — Il fanta da spogliatoio',
     description:
-      'Panka è il fantacalcio dove schieri i tuoi compagni di squadra, quelli veri: formazioni, voti del mister e classifica sulle vostre partite di calcio a 7 e a 11.',
-    ogAlt: 'Panka — il fantacalcio sulle tue partite reali',
+      'Panka è il fanta dove schieri i tuoi compagni di squadra, quelli veri: formazioni, voti del mister e classifica sulle vostre partite di calcio a 7 e a 11.',
+    ogAlt: 'Panka — il fanta sulle tue partite reali',
   },
 };

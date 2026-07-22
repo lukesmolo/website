@@ -1,3 +1,4 @@
+@import '@fontsource-variable/montserrat';
 @import './theme.css';
 @import 'tailwindcss';
 
@@ -9,6 +10,7 @@
   --color-on-primary: var(--color-on-primary);
   --color-accent: var(--color-accent);
   --color-on-accent: var(--color-on-accent);
+  --color-accent-ink: var(--color-accent-ink);
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
   --color-surface-2: var(--color-surface-2);
@@ -51,15 +53,45 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
 
+html {
+  /* Fallback dietro al gradiente di cornice */
+  background-color: var(--panka-field);
+}
+
 body {
-  background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Cornice gradiente verde→ambra dietro alla pagina (mockup Proposta 03).
+   Fissa al viewport: la si vede solo nel bordo attorno alla shell. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradient-brand);
+}
+
+/* La pagina è una grande card color carta appoggiata sul gradiente. */
+.page-shell {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-shell);
+  /* clip (non hidden): ritaglia gli angoli senza rompere l'header sticky */
+  overflow: clip;
+  margin: 0.625rem;
+  box-shadow: 0 24px 80px rgb(26 31 27 / 0.28);
+}
+@media (min-width: 640px) {
+  .page-shell {
+    margin: 1rem;
+  }
 }
 
 ::selection {
@@ -67,9 +99,10 @@ body {
   color: var(--color-on-accent);
 }
 
-/* Focus visibile e coerente ovunque (accessibilità da tastiera) */
+/* Focus visibile e coerente ovunque (accessibilità da tastiera).
+   Ambra scurita: quella pura non raggiunge 3:1 sul fondo carta. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent-ink);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -96,7 +129,7 @@ body {
   --cc-btn-primary-hover-color: var(--color-on-accent);
   --cc-btn-secondary-bg: var(--color-surface-2);
   --cc-btn-secondary-color: var(--color-text);
-  --cc-btn-secondary-hover-bg: color-mix(in srgb, var(--color-surface-2) 80%, white);
+  --cc-btn-secondary-hover-bg: color-mix(in srgb, var(--color-surface-2) 92%, black);
   --cc-btn-secondary-hover-color: var(--color-text);
   --cc-separator-border-color: var(--color-border);
   --cc-toggle-on-bg: var(--color-accent);
@@ -112,6 +145,60 @@ body {
   --cc-overlay-bg: rgb(0 0 0 / 0.6);
   --cc-btn-border-radius: var(--radius-input);
   --cc-modal-border-radius: var(--radius-card);
+}
+
+/* ------------------------------------------------------------------ */
+/* Micro-animazioni: reveal allo scroll + decorazioni                   */
+/* ------------------------------------------------------------------ */
+
+/* Gli elementi .reveal partono nascosti SOLO se il JS è attivo (classe
+   html.js aggiunta in Base.astro): senza JS il sito resta tutto visibile.
+   Lo stagger si regola con style="--reveal-delay: 120ms" sull'elemento.
+   translate/scale/colori restano nella lista per non rompere gli hover
+   Tailwind sugli stessi elementi. */
+html.js .reveal,
+html.js .reveal.is-visible {
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    translate 0.25s ease,
+    scale 0.25s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Glow pulsante della hero (solo opacità: convive con le utility transform) */
+@keyframes panka-glow {
+  from {
+    opacity: 0.07;
+  }
+  to {
+    opacity: 0.16;
+  }
+}
+.animate-glow {
+  animation: panka-glow 5s ease-in-out infinite alternate;
+}
+
+/* Fluttuazione lenta del telefono nella hero */
+@keyframes panka-float {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: translateY(6px);
+  }
+}
+.animate-float {
+  animation: panka-float 5.5s ease-in-out infinite alternate;
 }
 
 /* Suggerimento lingua dismissibile (creato da main.ts) */
@@ -135,7 +222,7 @@ body {
   box-shadow: var(--shadow-float);
 }
 .lang-hint a {
-  color: var(--color-accent);
+  color: var(--color-accent-ink);
   font-weight: 700;
   text-decoration: underline;
 }
